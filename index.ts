@@ -9,5 +9,9 @@ const rl = readline.createInterface({ input, output });
     let version: string = "1.0.0";
     let userName: string = "Felipe";
 
+    console.log(`Bienvenido al ${systemName} (versión ${version})`);
+    console.log(`Usuario: ${userName}`);    
+    
+
 // 🚫 No eliminar las líneas de abajo ⬇️
 rl.close();
