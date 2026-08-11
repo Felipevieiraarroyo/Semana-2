@@ -18,7 +18,7 @@ const rl = readline.createInterface({ input, output });
     let continuar: boolean = true;
 
     while (continuar) {
-        console.log('\n---GESTOR DE TAREAS ---');
+        console.log('---GESTOR DE TAREAS ---');
         console.log('1. Agregar tarea');
         console.log('2. Eliminar última tarea');
         console.log('3. Listar tareas');
@@ -45,7 +45,7 @@ const rl = readline.createInterface({ input, output });
             }
         break;
         case '3':
-            console.log('\n--- LISTA DE TAREAS ---')
+            console.log('--- LISTA DE TAREAS ---')
             if (tareas.length === 0) {
                 console.log('La lista esta vacia')
             }else {
