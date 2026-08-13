@@ -18,10 +18,27 @@ const rl = readline.createInterface({ input, output });
     completo: boolean;
 }
 
-    let entregable7: string[]
-    
-const tareas: task[] = [];
+    const tareas: task[] = [];
     let idContador = 1;
+
+    let tasks: task[] = [];
+
+const markCompleted = (id:number): void => {
+    const taskFound = tasks.find(task => task.id === id)
+    if (taskFound){
+        taskFound.completo = true
+        console.log(`Tarea con id ${id} marcada como completada`)
+    }
+}
+
+const filtroPendiente = (): task[] => {
+    return tasks.filter(task => !task.completo)
+}
+
+const filtroCompleto = (): task[] => {
+    return tasks.filter(tasks => tasks.completo)
+}
+
 const addTask = (title: string): void => {
         const nuevaTarea: task = {
             id: idContador,
@@ -32,17 +49,36 @@ const addTask = (title: string): void => {
         idContador++;
         console.log(`Tarea ${title}`)
     }
-const listTasks = (): void => {
+const listTasks = (tasksParaSalir: task[]): void => {
     console.log('--- LISTA DE TAREAS ---')
-    if (tareas.length === 0){
+    if (tasksParaSalir.length === 0){
         console.log('La lista esta vacia')
     return;
     }
-    for (let i = 0; i < tareas.length; i++) {
-        const estado = tareas[i].completo ? 'completo' : 'pendiente'
-        console.log(`[${tareas[i].id}] ${tareas[i].titulo} - ${estado}`)
+    
+const formateandoTareas = tasksParaSalir.map(({ id, titulo, completo }) => {
+    const estado = completo ? '[x]' : '[]'
+    return `${estado} id: ${id} - ${titulo}`
+})
+formateandoTareas.forEach(taskString => console.log(taskString))
+}
+
+const eliminarTarea = (idEliminado: number): void => {
+    const indice = tareas.findIndex(t => t.id === idEliminado)
+    
+    if(indice !== -1){
+        tareas.splice(indice, 1)
+        console.log(`Tarea eliminada: id ${idEliminado}`)
+    }else  {
+        console.log(`No se encontro ningunatarea con el id ${idEliminado}`)
     }
 }
+    
+    /*for (let i = 0; i < tareas.length; i++) {
+        const estado = tareas[i].completo ? 'completo' : 'pendiente'
+        console.log(`[${tareas[i].id}] ${tareas[i].titulo} - ${estado}`)
+    }*/
+
 const removeTasks = (idElimimado: number): void => {
     const indice = tareas.findIndex(t => t.id === idElimimado)
 
@@ -59,11 +95,14 @@ const removeTasks = (idElimimado: number): void => {
     while (continuar) {
         console.log('---GESTOR DE TAREAS ---');
         console.log('1. Agregar tarea');
-        console.log('2. Eliminar última tarea');
+        console.log('2. Eliminar tarea por ID');
         console.log('3. Listar tareas');
-        console.log('4. Salir');
+        console.log('4. Marcar tarea como completada');
+        console.log('5. Ver  tareas pendientes');
+        console.log('6. Ver tareas completadas');
+        console.log('7. Salir');
         
-        const opcion = await rl.question('Selecciona una opción (1-4): ');
+        const opcion = await rl.question('Selecciona una opción (1-7): ');
 
     switch (opcion.trim()) {
         case '1':
@@ -71,8 +110,6 @@ const removeTasks = (idElimimado: number): void => {
             if (nuevaTarea.trim() !== '') {
                 const tituloIngresado = await rl.question('Introduce el titulo de la tarea: ')
                 addTask(tituloIngresado.trim())
-                tareas.push(nuevaTarea.trim())
-                console.log(`Tarea "${nuevaTarea}" agregada con exito}`)
             }else{
                 console.log("El titulo no puede esta vacio")
             }
@@ -91,9 +128,35 @@ const removeTasks = (idElimimado: number): void => {
             }
         break;
         case '3':
-           listTasks()
+           listTasks(tareas)
         break;
-        case '4':
+        case '4': 
+        
+        if(tareas.length > 0) {
+            const idInput = await rl.question('Introduce el ID de la tarea a completar: ')
+            const idNum = parseInt(idInput);
+            if (!isNaN(idNum)){
+                markCompleted(idNum)
+            }else {
+                console.log('Ingresa un numero valido')
+            }
+        }
+        break;
+        case '5': 
+
+        console.log(`Filtrando pendientes...`)
+        const pendientes = filtroPendiente()
+        listTasks(pendientes)
+        break;
+
+        case '6': 
+
+        console.log(`Filtrando completadas...`)
+        const completadas = filtroCompleto()
+        listTasks(completadas)
+        break;
+         
+        case '7': 
             console.log('Saliendo del programa...')
             continuar = false;
         break;
@@ -104,6 +167,5 @@ const removeTasks = (idElimimado: number): void => {
 
     }
 };
-
 // 🚫 No eliminar las líneas de abajo ⬇️
 rl.close();
