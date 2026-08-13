@@ -167,5 +167,6 @@ const removeTasks = (idElimimado: number): void => {
 
     }
 };
+iniciarMenu();
 // 🚫 No eliminar las líneas de abajo ⬇️
 rl.close();
