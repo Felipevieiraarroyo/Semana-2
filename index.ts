@@ -24,7 +24,7 @@ let idContador = 1;
 function saveToDB(tarea: task): Promise<void> {
   return new Promise((resolve) => {
     setTimeout(() => {
-      console.log(`[DB] Tarea ${tarea.titulo} fue guardada`);
+      console.log(`Tarea ${tarea.titulo} fue guardada`);
       resolve();
     }, 2000);
   });
@@ -60,7 +60,7 @@ async function addTask(title: string): Promise<void> {
     await saveToDB(nuevaTarea);
 
     tareas.push(nuevaTarea);
-    console.log(`[APP] Tarea agregada`);
+    console.log(`Tarea agregada`);
   } catch (error: any) {
     console.log(`[ERROR]: ${error.message}`);
   }
@@ -86,7 +86,7 @@ function eliminarTareaID(id: number): void {
   if (tareas.length < longitudInicial) {
     console.log(`Tarea con id ${id} eliminada`);
   } else {
-    console.log(`[!] No se encontro ninguna tarea con el id ${id}`);
+    console.log(`No se encontro ninguna tarea con el id ${id}`);
   }
 }
 function listTasks1(): void {
@@ -171,6 +171,7 @@ const iniciarMenu = async () => {
       case "7":
         console.log("Saliendo del programa...");
         continuar = false;
+        rl.close();
         break;
       default:
         console.log("Opcionno valida. Intenta de nuevo");
@@ -179,7 +180,6 @@ const iniciarMenu = async () => {
   }
 };
 // ============ INICIANDO LA INTERACCION ==============
-rl.close();
 iniciarMenu();
 
 // 🚫 No eliminar las líneas de abajo ⬇️
